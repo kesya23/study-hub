@@ -4,9 +4,7 @@ import datetime
 
 app = Flask(__name__)
 app.secret_key = "studyhub"
-
-# WAJIB pakai async_mode eventlet untuk Render
-socketio = SocketIO(app, async_mode="eventlet")
+socketio = SocketIO(app)
 
 # ===== DATA JADWAL =====
 jadwal_kuliah = {
@@ -30,30 +28,26 @@ jadwal_kuliah = {
     ]
 }
 
-# ===== LOGIN =====
-@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET","POST"])
 def login():
     if request.method == "POST":
         session["username"] = request.form["username"]
         return render_template("chat.html", username=session["username"])
     return render_template("login.html")
 
-# ===== CHAT =====
 @socketio.on("send_message")
 def chat(data):
     emit("receive_message", data, broadcast=True)
 
     text = data["message"].lower()
-
     if "@bot" not in text:
         return
 
-    msg = text.replace("@bot", "").strip()
-
-    hari_list = ["senin", "selasa", "rabu", "kamis", "jumat", "sabtu", "minggu"]
+    msg = text.replace("@bot","").strip()
+    hari_list = ["senin","selasa","rabu","kamis","jumat","sabtu","minggu"]
     hari_ini = hari_list[datetime.datetime.today().weekday()]
 
-    # ===== MENU =====
+    # ===== MENU AWAL =====
     if msg == "":
         reply = (
             "Hai 👋 Aku Study Hub Bot 🤖\n\n"
@@ -65,60 +59,65 @@ def chat(data):
             "@bot motivasi"
         )
 
+    # ===== MENU JADWAL =====
     elif msg == "jadwal":
         reply = (
-            "📅 Menu Jadwal Kuliah\n\n"
-            "Contoh perintah:\n"
+            "📅 *Menu Jadwal Kuliah*\n\n"
+            "Kamu mau tanya apa?\n"
+            "• Jadwal hari ini\n"
+            "• Jadwal hari tertentu\n"
+            "• Ruang mata kuliah\n"
+            "• Dosen mata kuliah\n"
+            "• Jam mata kuliah\n\n"
+            "Contoh:\n"
             "@bot jadwal hari ini\n"
             "@bot jadwal senin\n"
-            "@bot dosen sistem operasi\n"
-            "@bot ruang e-commerce"
+            "@bot dosen sistem operasi"
         )
 
     elif "jadwal hari ini" in msg:
         if hari_ini in jadwal_kuliah:
             reply = f"📅 Jadwal hari ini ({hari_ini.capitalize()}):\n"
             for m in jadwal_kuliah[hari_ini]:
-                reply += f"- {m['matkul']} ({m['jam']} | Ruang {m['ruang']})\n"
+                reply += f"- {m['matkul']} ({m['jam']}, Ruang {m['ruang']})\n"
         else:
-            reply = "Tidak ada jadwal hari ini."
+            reply = f"Tidak ada jadwal hari ini ({hari_ini.capitalize()})."
 
     elif "jadwal" in msg:
-        hari = msg.replace("jadwal", "").strip()
+        hari = msg.replace("jadwal","").strip()
         if hari in jadwal_kuliah:
             reply = f"📅 Jadwal {hari.capitalize()}:\n"
             for m in jadwal_kuliah[hari]:
-                reply += f"- {m['matkul']} ({m['jam']} | Ruang {m['ruang']})\n"
+                reply += f"- {m['matkul']} ({m['jam']}, Ruang {m['ruang']})\n"
         else:
-            reply = "Jadwal tidak ditemukan."
+            reply = "Tidak ada jadwal di hari tersebut."
 
     elif "dosen" in msg:
-        nama = msg.replace("dosen", "").strip()
-        reply = "Data dosen tidak ditemukan."
+        nama = msg.replace("dosen","").strip()
+        reply = "Data tidak ditemukan."
         for hari in jadwal_kuliah.values():
             for m in hari:
                 if nama in m["matkul"].lower():
                     reply = f"Dosen {m['matkul']} adalah {m['dosen']}"
 
     elif "ruang" in msg:
-        nama = msg.replace("ruang", "").strip()
-        reply = "Data ruang tidak ditemukan."
+        nama = msg.replace("ruang","").strip()
+        reply = "Data tidak ditemukan."
         for hari in jadwal_kuliah.values():
             for m in hari:
                 if nama in m["matkul"].lower():
-                    reply = f"{m['matkul']} berada di Ruang {m['ruang']}"
+                    reply = f"{m['matkul']} di Ruang {m['ruang']}"
 
     elif msg == "motivasi":
-        reply = "✨ Jangan menyerah yaa, sedikit demi sedikit itu tetap kemajuan 💜"
+        reply = "✨ Jangan menyerah. Sedikit demi sedikit tetap kemajuan 💜"
 
     else:
-        reply = "Aku belum paham 😅 ketik @bot untuk lihat menu."
+        reply = "Maaf aku belum paham 😅 ketik @bot untuk lihat menu."
 
     emit("receive_message", {
         "username": "🤖 Study Hub Bot",
         "message": reply
     }, broadcast=True)
 
-# ===== RUN SERVER (RENDER READY) =====
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=10000)
+    socketio.run(app, host="0.0.0.0", port=8080)
