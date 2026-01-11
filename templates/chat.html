@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Study Hub</title>
-
-    <!-- WAJIB untuk mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}">
@@ -12,22 +10,15 @@
 </head>
 <body>
 
-<div class="chat-container">
+<div class="app">
     <div class="chat-header">
         Study Hub Group
     </div>
 
-    <div class="chat-box" id="chat-box">
-        <!-- pesan masuk dari JS -->
-    </div>
+    <div class="chat-box" id="chat-box"></div>
 
     <div class="chat-input">
-        <input
-            id="msg"
-            type="text"
-            placeholder="Ketik pesan... (@bot jadwal hari ini)"
-            autocomplete="off"
-        >
+        <input id="msg" placeholder="Ketik pesan...">
         <button onclick="send()">Kirim</button>
     </div>
 </div>
