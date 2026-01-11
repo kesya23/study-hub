@@ -7,32 +7,101 @@ html, body {
     width: 100%;
     height: 100%;
     font-family: Arial, sans-serif;
+    background: #efe7f6;
 }
 
 /* ===== APP FULL SCREEN ===== */
 .app {
     width: 100vw;
-    height: 100dvh; /* FIX mobile modern */
+    height: 100dvh; /* FIX mobile */
     display: flex;
     flex-direction: column;
-    background: #efe7f6;
+    overflow: hidden;
 }
 
 /* ===== HEADER ===== */
 .chat-header {
     background: #6a1b9a;
     color: white;
-    padding: 15px;
     text-align: center;
+    padding: 15px;
     font-weight: bold;
     flex-shrink: 0;
 }
 
-/* ===== CHAT ===== */
+/* ===== CHAT AREA ===== */
 .chat-box {
     flex: 1;
-    overflow-y: auto;
     padding: 15px;
+    overflow-y: auto;
+}
+
+/* ===== MESSAGE WRAPPER ===== */
+.message {
+    display: flex;
+    width: 100%;
+    margin-bottom: 12px;
+    align-items: flex-end;
+}
+
+/* USER (KANAN) */
+.message.me {
+    justify-content: flex-end;
+}
+
+/* OTHER / BOT (KIRI) */
+.message.other {
+    justify-content: flex-start;
+}
+
+/* ===== AVATAR ===== */
+.avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #9575cd;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: 8px;
+}
+
+.message.me .avatar {
+    display: none;
+}
+
+/* ===== BUBBLE ===== */
+.bubble {
+    max-width: 75%;
+    background: white;
+    padding: 10px 14px;
+    border-radius: 15px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+/* USER BUBBLE (KANAN) */
+.message.me .bubble {
+    background: #7e57c2;
+    color: white;
+    border-bottom-right-radius: 5px;
+}
+
+/* OTHER BUBBLE (KIRI) */
+.message.other .bubble {
+    border-bottom-left-radius: 5px;
+}
+
+/* ===== NAME ===== */
+.name {
+    font-size: 12px;
+    font-weight: bold;
+    color: #6a1b9a;
+    margin-bottom: 4px;
 }
 
 /* ===== INPUT ===== */
@@ -46,16 +115,20 @@ html, body {
 
 .chat-input input {
     flex: 1;
-    padding: 10px;
+    padding: 10px 14px;
     border-radius: 20px;
     border: 1px solid #ccc;
+    outline: none;
+    font-size: 14px;
 }
 
 .chat-input button {
     margin-left: 8px;
-    padding: 10px 15px;
-    border-radius: 20px;
     border: none;
     background: #6a1b9a;
     color: white;
+    padding: 10px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
 }
