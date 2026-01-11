@@ -1,25 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
     <title>Study Hub</title>
+
+    <!-- WAJIB untuk mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}">
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 </head>
 <body>
 
 <div class="chat-container">
-    <div class="chat-header">Study Hub Group</div>
-    <div class="chat-box" id="chat-box"></div>
+    <div class="chat-header">
+        Study Hub Group
+    </div>
+
+    <div class="chat-box" id="chat-box">
+        <!-- pesan masuk dari JS -->
+    </div>
 
     <div class="chat-input">
-        <input id="msg" placeholder="Ketik pesan... (@bot jadwal hari ini)">
+        <input
+            id="msg"
+            type="text"
+            placeholder="Ketik pesan... (@bot jadwal hari ini)"
+            autocomplete="off"
+        >
         <button onclick="send()">Kirim</button>
     </div>
 </div>
 
 <script>
-const username = "{{ username }}";
+    const username = "{{ username }}";
 </script>
 <script src="{{ url_for('static', filename='script.js') }}"></script>
+
 </body>
 </html>

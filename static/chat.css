@@ -2,52 +2,63 @@
     box-sizing: border-box;
 }
 
+/* ===== BODY ===== */
 body {
     margin: 0;
     background: #ece6f7;
-    height: 100vh;
+    min-height: 100vh;        /* FIX mobile */
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: Arial, sans-serif;
 }
 
+/* ===== CONTAINER ===== */
 .chat-container {
-    width: 420px;
-    height: 90vh;
+    width: 100%;
+    max-width: 420px;
+    height: 100%;             /* FIX mobile */
+    max-height: 100vh;        /* FIX mobile */
     background: #f4effa;
-    border-radius: 15px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    border-radius: 15px;
 }
 
+/* ===== HEADER ===== */
 .chat-header {
     background: #6a1b9a;
     color: white;
     text-align: center;
     padding: 15px;
     font-weight: bold;
+    font-size: 16px;
 }
 
+/* ===== CHAT AREA ===== */
 .chat-box {
     flex: 1;
     padding: 15px;
     overflow-y: auto;
+    background: #efe7f6;
 }
 
+/* ===== MESSAGE ===== */
 .message {
     display: flex;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    align-items: flex-end;
 }
 
 .message.me {
     justify-content: flex-end;
 }
 
+/* ===== AVATAR ===== */
 .avatar {
-    width: 35px;
-    height: 35px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     background: #9575cd;
     color: white;
@@ -55,26 +66,36 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: bold;
+    font-size: 14px;
     margin-right: 8px;
 }
 
-.avatar.bot {
-    background: #512da8;
+.message.me .avatar {
+    display: none;
 }
 
+/* ===== BUBBLE ===== */
 .bubble {
-    max-width: 70%;
+    max-width: 75%;
     background: white;
     padding: 10px 14px;
     border-radius: 15px;
     font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
 }
 
 .message.me .bubble {
     background: #7e57c2;
     color: white;
+    border-bottom-right-radius: 5px;
 }
 
+.message.other .bubble {
+    border-bottom-left-radius: 5px;
+}
+
+/* ===== NAME ===== */
 .name {
     font-size: 12px;
     font-weight: bold;
@@ -82,17 +103,21 @@ body {
     margin-bottom: 4px;
 }
 
+/* ===== INPUT ===== */
 .chat-input {
     display: flex;
     padding: 10px;
     background: white;
+    border-top: 1px solid #ddd;
 }
 
 .chat-input input {
     flex: 1;
-    padding: 10px;
+    padding: 10px 14px;
     border-radius: 20px;
     border: 1px solid #ccc;
+    outline: none;
+    font-size: 14px;
 }
 
 .chat-input button {
@@ -100,7 +125,21 @@ body {
     border: none;
     background: #6a1b9a;
     color: white;
-    padding: 10px 15px;
+    padding: 10px 16px;
     border-radius: 20px;
     cursor: pointer;
+    font-size: 14px;
+}
+
+/* ===== MOBILE MODE ===== */
+@media (max-width: 480px) {
+    body {
+        align-items: stretch;
+    }
+
+    .chat-container {
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0;
+    }
 }
